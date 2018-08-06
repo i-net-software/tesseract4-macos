@@ -1,0 +1,33 @@
+os: osx
+osx_image: xcode9.4
+language: cpp
+before_install:
+  - brew update && brew bundle
+  - mkdir ~/projects
+  - cd ~/projects
+  - git clone https://github.com/tesseract-ocr/tesseract/
+  - cd tesseract/java
+  - wget http://search.maven.org/remotecontent?filepath=org/piccolo2d/piccolo2d-core/3.0/piccolo2d-core-3.0.jar
+  - wget http://search.maven.org/remotecontent?filepath=org/piccolo2d/piccolo2d-extras/3.0/piccolo2d-extras-3.0.jar
+  - git clone https://github.com/tesseract-ocr/langdata
+install:
+  - cd tesseract
+  - ./autogen.sh
+  - ./configure \
+  CPPFLAGS=-I/usr/local/opt/icu4c/include \
+  LDFLAGS=-L/usr/local/opt/icu4c/lib
+before_script:
+  - cd tesseract
+  - make -j
+script:
+  - cd tesseract
+  - sudo make install
+  - sudo update_dyld_shared_cache
+  - make training
+  - cd java
+  - SCROLLVIEW_PATH=$(pwd) make ScrollView.jar
+  - cd ..
+  - text2image --list_available_fonts --fonts_dir=/Library/Fonts
+  - git clone https://github.com/tesseract-ocr/tessdata_best
+  - cp tessdata_best/eng.traineddata tesseract/tessdata/
+  
