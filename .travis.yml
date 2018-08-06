@@ -13,9 +13,7 @@ before_install:
 install:
   - cd tesseract
   - ./autogen.sh
-  - ./configure \
-  CPPFLAGS=-I/usr/local/opt/icu4c/include \
-  LDFLAGS=-L/usr/local/opt/icu4c/lib
+  - ./configure CPPFLAGS=-I/usr/local/opt/icu4c/include LDFLAGS=-L/usr/local/opt/icu4c/lib
 before_script:
   - cd tesseract
   - make -j
