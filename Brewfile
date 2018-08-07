@@ -1,9 +1,0 @@
-automake
-autoconf
-autoconf-archive
-libtool
-pkgconfig
-icu4c
-leptonica
-libleptonica-dev
-gcc
